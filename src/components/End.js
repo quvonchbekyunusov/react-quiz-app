@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {formatTime} from '../utils/index'
 
-function End({ results, data, onReset, onAnswersCheck, time}) {
+function End({ results, data, onReset, onAnswersCheck, time, leaderboard, name}) {
 
     const [correctAnswers, setCorrectAnswers] = useState(0);
 
@@ -11,8 +11,14 @@ function End({ results, data, onReset, onAnswersCheck, time}) {
             if(result.a === data.[index].answer) {
                 correct++;
             }
+            leaderboard.correct=correct;
         });
         setCorrectAnswers(correct)
+        leaderboard.name=name;
+        leaderboard.time=time;
+        leaderboard.correct=correctAnswers;
+        console.log(leaderboard)
+// eslint-disable-next-line 
     }, [])
 
     return (

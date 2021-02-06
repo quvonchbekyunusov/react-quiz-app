@@ -120,5 +120,12 @@
             ],
             "answer": "0xBEEF"
             }
+        ],
+        "leaderboard": [
+            {
+                "name": "",
+                "correct": "",
+                "time":""
+            }
         ]
     }
