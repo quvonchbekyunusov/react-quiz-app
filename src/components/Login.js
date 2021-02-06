@@ -12,7 +12,7 @@ function Login({onHandleChange, handleLogin}) {
                         placeholder="Primary input" 
                         onChange={onHandleChange}
                     />
-                    <button className="button is-info is-medium" onClick={handleLogin}>
+                    <button className="button is-info is-medium" onClick={handleLogin} style={{marginTop:20}}>
                         Start
                     </button>
                 </div>
