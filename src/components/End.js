@@ -17,7 +17,7 @@ function End({ results, data, onReset, onAnswersCheck, time, leaderboard, name, 
         // leaderboard.correct = correctAnswers
         leaderboard.name=name;
         leaderboard.time=time;
-        leaderData.push(leaderboard)
+        leaderData.unshift(leaderboard)
         console.log(leaderData)
 
 // eslint-disable-next-line 
