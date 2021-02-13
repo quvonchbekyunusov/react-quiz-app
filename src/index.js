@@ -4,6 +4,24 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bulma/css/bulma.min.css';
 
+import firebase from 'firebase/app'
+import 'firebase/database';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBWGP6VYh9rz2GWt9AVsiUKXLlF8gj3lJU",
+  authDomain: "quiz-leaderboard-75c33.firebaseapp.com",
+  databaseURL: "https://quiz-leaderboard-75c33-default-rtdb.firebaseio.com",
+  projectId: "quiz-leaderboard-75c33",
+  storageBucket: "quiz-leaderboard-75c33.appspot.com",
+  messagingSenderId: "1033233354313",
+  appId: "1:1033233354313:web:5f88a65cfb683e06a1b998"
+}
+
+
+firebase.initializeApp(firebaseConfig);
+
+//console.log(db)
+
 ReactDOM.render(
   <React.StrictMode>
     <App />

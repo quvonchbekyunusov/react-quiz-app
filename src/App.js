@@ -6,7 +6,10 @@ import Start from "./components/Start";
 import End from './components/End';
 import Modal from './components/Modal';
 import Login from './components/Login';
-import { shuffle } from './randomize.js'
+import { shuffle } from './randomize.js';
+import firebase from 'firebase/app'
+import 'firebase/database';
+import { insertionSort } from './sort'
 
 let interval;
 
@@ -17,11 +20,26 @@ function App() {
   const [showModal, setShowModal] = useState(false)
   const [time, setTime] = useState(0);
   const [name,  setName] = useState('');
-  const [randomData, setRandomData] = useState([])
+  const [randomData, setRandomData] = useState([]);
   // eslint-disable-next-line
-  const [randomQuiz, setRandomQuiz] =useState([])
-  // eslint-disable-next-line
- // const [correctCount, setCorrectCount] = useState(0)
+  const [randomQuiz, setRandomQuiz] =useState([]);
+  const [fireData, steFireData] = useState([])
+  const [sortData, setSortData] = useState([])
+  const [leaderData, setLeaderData] = useState([])
+
+  useEffect(() => {
+    const db = firebase.database();
+    const data = db.ref('leaderboard');
+    data.on('value', (elem) => steFireData(elem.val()));
+  }, [])
+
+  useEffect(() => {
+    setSortData(leaderData.sort((correct) => {
+      return (a, b) => (a[correct] > b[correct]) ? 1 : ((b[correct] > a[correct]) ? -1 : 0)}))
+    console.log(sortData)
+    // eslint-disable-next-line
+  }, [])
+
 
   const leaderboard = {
     name: '',
@@ -33,25 +51,29 @@ function App() {
     setRandomData(shuffle(quizData.data))
     setStep(1)
   }
-
-  // useEffect(()=>{
-  //   setRandomData(shuffle(quizData.data))
-  // }, [])
   
   const onHandleChange = (event) => {
     setName(event.target.value)
   }
 
-  // useEffect(()=>{
-  //   randomData.forEach((quistion, index)=>{
-  //     if(index<5) {
-  //       randomQuiz.push(quistion)
-  //     }
-  //   })
-  // }, [randomData])
+  const onQuit = () => {
+    setRandomQuiz([])
+    setActiveQuestion(0);
+    setAnswers([]);
+    setStep(0);
+  }
+
   useEffect(() => {
     if(step === 3) {
       clearInterval(interval)
+    }
+  }, [step])
+  useEffect(() => {
+    if(step === 2) {
+      setTime(0);
+      interval = setInterval(() => {
+        setTime(prevTime => prevTime + 1)
+      }, 1000)
     }
   }, [step])
 
@@ -62,20 +84,15 @@ function App() {
       }
     })
     setStep(2)
-    interval = setInterval(() => {
-      setTime(prevTime => prevTime + 1 );
-    }, 1000);
   }
 
+  
   const resetClickHandler = () => {
     setActiveQuestion(0);
     setAnswers([]);
     setStep(2);
-    setTime(0);
-    interval = setInterval(() => {
-      setTime(prevTime => prevTime + 1)
-    }, 1000)
   }
+
   
   return (
     <div className="App">
@@ -100,6 +117,9 @@ function App() {
         onReset={resetClickHandler}
         onAnswersCheck={()=>setShowModal(true)}
         time={time}
+        leaderData={leaderData}
+        fireData={fireData}
+        onQuit={onQuit}
        />}
       {showModal && <Modal
         results={answers}
